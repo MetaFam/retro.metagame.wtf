@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      text {
+        font-size: 5vh;
+        opacity: 0.25;
+        transform: translate(var(--x-trans), var(--y-trans));
+        animation: fade 5s linear infinite;
+      }
+
+      @keyframes fade {
+        90% { opacity: 0 }
+        to { opacity: 0 }
+      }
+    </style>
+    <script><![CDATA[
+      document.addEventListener('DOMContentLoaded', () => {
+        const ghost = document.querySelector('text')
+        const cssDur = window.getComputedStyle(ghost).getPropertyValue('animation-duration')
+        const dur = Number(cssDur.replace(/\D/g, '')) * 1_000
+        let start = Date.now()
+        let xOffset = 45
+        const step = () => {
+          let elapsed = Date.now() - start
+          if(elapsed > dur) {
+            xOffset = 10 + 80 * Math.random()
+            start = Date.now()
+            elapsed = 0
+          }
+          const progress = elapsed / dur
+          ghost.style.setProperty('--x-trans', `${xOffset + Math.sin(progress * 5 * Math.PI) * 3}vw`)
+          ghost.style.setProperty('--y-trans', `calc(${100 - progress * 100}% - 1em)`)
+        }
+        window.setInterval(step, 25)
+      })
+    ]]></script>
+  </defs>
+  <text>👻</text>
+</svg>
